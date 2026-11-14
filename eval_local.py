@@ -137,7 +137,8 @@ def main():
     parser.add_argument('--data-dir', type=Path, default=DEFAULT_DATA)
     parser.add_argument('--mode', choices=['continus', 'setmanes'], default='continus')
     parser.add_argument('--min-hores', type=int, default=24, help='Minim per bloc continu (per defecte 24)')
-    parser.add_argument('--preu-exportacio', type=float, default=0.04)
+    parser.add_argument('--preu-exportacio', type=float, default=0.0,
+                        help="Preu d'exportacio en EUR/kWh (per defecte 0, segons l'enunciat)")
     parser.add_argument('--csv', type=Path, help='Opcional: desa les metriques detallades per bloc')
     args = parser.parse_args()
     if args.min_hores < 1 or not math.isfinite(args.preu_exportacio):
