@@ -17,8 +17,8 @@ class BatteryAgent:
         # Paràmetres de normalització de la funció objectiu (ajustables amb dades de train)
         self.pes_co2 = 0.70
         self.pes_cost = 0.30
-        self.ref_co2 = 0.14    # kg CO2/kWh mitjà de referència
-        self.ref_cost = 0.11   # €/kWh mitjà de referència
+        self.ref_co2 = 0.0847    # kg CO2/kWh mitjà de referència
+        self.ref_cost = 0.1380   # €/kWh mitjà de referència
         self.preu_excedent = 0.04
 
         # Perfil adaptatiu de demanda neta (Demanda - Solar) en kW: [2 (laborable/cap de setmana), 24 hores]
@@ -164,9 +164,9 @@ class BatteryAgent:
         # Construcció del vector de 25 passos: hora actual exacta + 24h de previsió
         preus_24h = list(obs.get("preus_properes_24h") or [])
         co2_24h = list(obs.get("co2_properes_24h") or [])
-        preus = np.array([preu_actual] + preus_24h, dtype=float)
-        co2 = np.array([co2_actual] + co2_24h, dtype=float)
-
+        preus = np.array(preus_24h if preus_24h else [preu_actual], dtype=float)
+        co2 = np.array(co2_24h if co2_24h else [co2_actual], dtype=float)
+       
         demanda_neta = self._preveure_demanda_neta(hora, dow, len(preus), d_recent)
         consigna_desitjada = self._resoldre_mpc(soc_kwh, preus, co2, demanda_neta)
 
